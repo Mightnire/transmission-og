@@ -1,57 +1,39 @@
-[![CI](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml)
-[![distcheck](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml)
-[![stylecheck](https://github.com/stefantalpalaru/transmission-og/actions/workflows/stylecheck.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/stylecheck.yml)
+[![CI](https://github.com/Mightnire/transmission-og/actions/workflows/ci.yml/badge.svg)](https://github.com/Mightnire/transmission-og/actions/workflows/ci.yml)
+[![distcheck](https://github.com/Mightnire/transmission-og/actions/workflows/distcheck.yml/badge.svg)](https://github.com/Mightnire/transmission-og/actions/workflows/distcheck.yml)
+[![stylecheck](https://github.com/Mightnire/transmission-og/actions/workflows/stylecheck.yml/badge.svg)](https://github.com/Mightnire/transmission-og/actions/workflows/stylecheck.yml)
 
-## About
+# Transmission
 
-Transmission OG (Old Generation) is a fork of
-[Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy
-and free BitTorrent client). It comes in several flavours:
-  * GTK+ and Qt GUI applications for Linux, BSD, macOS, Windows, etc.
-  * a daemon for servers and routers
-  * a native macOS GUI application (a bit lagging in features, help welcome)
-  * a web UI for remote controlling any of the above
+Transmission is a fast, easy, and free BitTorrent client.
 
-This fork is focused on stability, by rewinding the project's history back
-before the big C++ rewrite. It's meant to coexist with a Transmission
-installation, while being a drop-in replacement, so it changes binary names and
-it keeps the same configuration directories.
+This repository maintains the rock-solid **Transmission 3.00 C codebase** (inheriting improvements from [Transmission OG](https://github.com/stefantalpalaru/transmission-og)), tailored for maximum stability, minimal memory usage, and seamless drop-in integration with embedded systems and Linux distributions.
 
-The only problem with this scheme is on Windows, where the Transmission
-installer configures `transmission-daemon` to start automatically as a service.
-This can be solved by stopping it from the "Services" app and changing its
-startup type from "Automatic" to "Manual".
+It comes in several flavours:
+* `transmission-daemon`: Headless daemon for servers, NAS, and embedded routers (Padavan, OpenWrt, etc.)
+* `transmission-remote`: CLI client to control and manage `transmission-daemon`
+* Standalone tools: `transmission-create`, `transmission-show`, `transmission-edit`
+* GTK+ 3 and Qt GUI applications for desktop systems
+* A built-in responsive Web UI for remote controlling any of the above
 
-## Command line interface notes
+## Key Features & Highlights
 
-Transmission OG is fully supported by `transmission-og-remote`, the preferred CLI client.
+* **Pure C Stability**: Preserves the lean, highly optimized C implementation before upstream's C++ rewrite, providing minimal RAM footprint and rock-solid reliability for 24/7 seedboxes and embedded routers.
+* **Native Drop-In Replacement**: All `-og` binary prefixes and suffixes have been stripped. Standard binary names (`transmission-daemon`, `transmission-remote`, etc.) and standard config directories (`~/.config/transmission-daemon`) are used, allowing 100% transparent replacement for standard Transmission installations.
+* **Standalone Release Archives**: Release tarballs (`transmission-*.tar.xz`, `*.tar.gz`) come pre-bundled with all essential third-party dependencies (`dht`, `libb64`, `libevent`, `libnatpmp`, `libutp`, `miniupnpc`), enabling instant offline compilation without recursive Git submodule fetches.
 
-Three standalone tools to examine, create, and edit .torrent files exist: `transmission-og-show`, `transmission-og-create`, and `transmission-og-edit`, respectively.
+## Command Line Interface Notes
 
-Prior to development of `transmission-og-remote`, the standalone client `transmission-og-cli` was created. Limited to a single torrent at a time, `transmission-og-cli` is deprecated and exists primarily to support older hardware dependent upon it. In almost all instances, `transmission-og-remote` should be used instead.
-
-Different distributions may choose to package any or all of these tools in one or more separate packages.
-
-## Packaging
-
-A 64-bit Windows installer is provided for each release. It has no external
-dependencies. All installed binaries are statically linked and
-[reproducible](https://reproducible-builds.org/). The GTK+ client was chosen
-over the Qt one, because it has more features.
-
-Gentoo Linux users need to use an overlay:
-
-```text
-eselect repository enable stefantalpalaru
-emaint sync --repo stefantalpalaru
-emerge transmission-og
-```
+* `transmission-remote`: The primary CLI tool to control the running daemon.
+* `transmission-show`: Inspect `.torrent` file metadata and file lists.
+* `transmission-create`: Create new `.torrent` files with custom trackers and piece sizes.
+* `transmission-edit`: Update announce URLs / trackers in existing `.torrent` files.
+* `transmission-cli`: Standalone client limited to a single torrent at a time (deprecated, kept for legacy hardware compatibility).
 
 ## Building from source
 
-### Dependencies
+### 1. Dependencies
 
-Ubuntu:
+#### Ubuntu / Debian:
 
 ```bash
 sudo apt-get install --no-install-recommends -yq \
@@ -69,7 +51,7 @@ sudo apt-get install --no-install-recommends -yq \
          zlib1g-dev
 ```
 
-macOS with Homebrew:
+#### macOS (Homebrew):
 
 ```bash
 export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
@@ -90,7 +72,7 @@ brew install \
          qt@5
 ```
 
-Windows with MSYS2's Mingw-w64 distribution:
+#### Windows (MSYS2 MinGW-w64):
 
 ```bash
 pacman -Syu \
@@ -109,101 +91,44 @@ pacman -Syu \
            mingw-w64-x86_64-zlib
 ```
 
-### Building
+### 2. Getting the Source
 
-Clone the Git repo:
+#### Option A: From Standalone Release Tarball (Recommended)
+
+Download the release archive with bundled third-party submodules from [Releases](https://github.com/Mightnire/transmission-og/releases):
 
 ```bash
-git clone https://github.com/stefantalpalaru/transmission-og.git
-cd transmission-og
-# Not needed the first time, only after building, pulling and getting errors
-# from the submodule update.
-git submodule foreach --quiet --recursive "git restore ."
+tar -xf transmission-3.07.1.tar.xz
+cd transmission-3.07.1
+```
+
+#### Option B: From Git Repository
+
+```bash
+git clone https://github.com/Mightnire/transmission-og.git transmission
+cd transmission
 git submodule update --init --recursive
 ```
 
-Or unpack the source archive:
+### 3. Compilation
 
-```bash
-tar -xf transmission-og-3.01.tar.xz
-cd transmission-og-3.01
-```
-
-Build it using Autotools (preferred method):
+#### Using Autotools (Recommended for daemon & CLI):
 
 ```bash
 ./configure --enable-cli
-make -j4 # if you have 4 CPU cores
+make -j$(nproc)
+sudo make install
 ```
 
-(You'll want to use `mingw32-make` on Windows)
-
-Or build it using CMake, which is an elaborate prank mistaken for a build system:
+#### Using CMake:
 
 ```bash
-mkdir build
-cd build
-# I know you just created this dir, but get into the habit of always deleting
-# CMake's command line argument cache. You can thank me later.
-rm -f CMakeCache.txt; cmake -DENABLE_CLI=ON -DUSE_SYSTEM_UTP=OFF ..
-make -j4 # if you have 4 CPU cores
+mkdir build && cd build
+cmake -DENABLE_CLI=ON -DUSE_SYSTEM_UTP=OFF ..
+make -j$(nproc)
+sudo make install
 ```
 
-On Windows, you need to pass `-G "MinGW Makefiles"` to CMake, while on macOS
-you need `-DOPENSSL_ROOT_DIR=/usr/local/opt/openssl`.
+## License
 
-## Translating
-
-Translations for Mac, Qt and GTK+ clients are managed on Transifex. To help
-translate, or add a new language, you'll need to [register on Transifex
-and join the translation
-team](https://help.transifex.com/en/articles/6248698-getting-started-as-a-translator)
-for the [Transmission OG
-project](https://explore.transifex.com/transmission-og/transmission-og/).
-
-Please open an issue here after updating a translation on Transifex.
-
-## Development
-
-### Code formatting
-
-We are using `clang-format` through the wrapper script `code_style.sh` (`make format` also works).
-
-Vim integration, using [vim-clang-format](https://github.com/rhysd/vim-clang-format) in your ~/.vimrc:
-
-```vimrc
-" self-cleaning augroup, to avoid problems when sourcing ~/.vimrc multiple times
-" https://old.reddit.com/r/vim/comments/4p4ogb/augroup_autocmd_need_some_clarification/d4i14it/
-augroup defgroup
-	autocmd!
-augroup END
-
-autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} setlocal shiftwidth=4 softtabstop=4 expandtab
-autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} ClangFormatAutoEnable
-```
-
-Git integration, using a ".git/hooks/pre-commit" with executable permissions:
-
-```bash
-#!/bin/sh
-
-root="$(git rev-parse --show-toplevel)"
-"${root}/code_style.sh" --check
-```
-
-### Updating translations
-
-```text
-cd po
-make update-po
-
-cd ../qt
-/usr/lib64/qt5/bin/lupdate qtr.pro
-```
-
-### Version bumping
-
-Needs to be done in: "configure.ac", "CMakeLists.txt" and
-"libtransmission/{Makefile.am,CMakeLists.txt}" (for the shared library).
-
-"NEWS.md" also needs a new section.
+Transmission is open source software distributed under the terms of the GNU General Public License (GPL) version 2 or version 3, with portions licensed under the MIT license.
