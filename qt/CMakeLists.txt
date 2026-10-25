@@ -195,26 +195,26 @@ include_directories(
 
 tr_win32_app_info(${PROJECT_NAME}_WIN32_RC_FILE
     "Transmission OG Qt Client"
-    "transmission-og-qt"
-    "transmission-og-qt.exe"
+    "transmission-qt"
+    "transmission-qt.exe"
     "qtr.ico")
 
 if(ENABLE_QT_COM_INTEROP)
     add_custom_command(
         OUTPUT
-            ${CMAKE_CURRENT_BINARY_DIR}/transmission-og-qt.tlb
+            ${CMAKE_CURRENT_BINARY_DIR}/transmission-qt.tlb
         COMMAND
             ${MIDL_EXECUTABLE} /tlb
-            ${CMAKE_CURRENT_BINARY_DIR}/transmission-og-qt.tlb transmission-og-qt.idl
+            ${CMAKE_CURRENT_BINARY_DIR}/transmission-qt.tlb transmission-qt.idl
         DEPENDS
-            transmission-og-qt.idl
+            transmission-qt.idl
         WORKING_DIRECTORY
             ${CMAKE_CURRENT_SOURCE_DIR}
     )
-    list(APPEND ${PROJECT_NAME}_WIN32_RC_FILE transmission-og-qt.tlb.rc
-        transmission-og-qt.idl ${CMAKE_CURRENT_BINARY_DIR}/transmission-og-qt.tlb)
-    set_source_files_properties(transmission-og-qt.idl
-        ${CMAKE_CURRENT_BINARY_DIR}/transmission-og-qt.tlb PROPERTIES HEADER_FILE_ONLY ON)
+    list(APPEND ${PROJECT_NAME}_WIN32_RC_FILE transmission-qt.tlb.rc
+        transmission-qt.idl ${CMAKE_CURRENT_BINARY_DIR}/transmission-qt.tlb)
+    set_source_files_properties(transmission-qt.idl
+        ${CMAKE_CURRENT_BINARY_DIR}/transmission-qt.tlb PROPERTIES HEADER_FILE_ONLY ON)
 endif()
 
 add_executable(${TR_NAME}-qt WIN32
@@ -251,7 +251,7 @@ if(INSTALL_DOC)
     install(FILES ${TR_NAME}-qt.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1)
 endif()
 
-install(FILES transmission-og-qt.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+install(FILES transmission-qt.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
 if(ENABLE_NLS)
     install(FILES ${${PROJECT_NAME}_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/${TR_NAME}/translations)

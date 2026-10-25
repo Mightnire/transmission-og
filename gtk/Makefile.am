@@ -25,9 +25,9 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-bin_PROGRAMS = transmission-og-gtk
+bin_PROGRAMS = transmission-gtk
 
-transmission_og_gtk_SOURCES = \
+transmission_gtk_SOURCES = \
     actions.c \
     conf.c \
     details.c \
@@ -52,7 +52,7 @@ transmission_og_gtk_SOURCES = \
     tr-window.c \
     util.c
 
-transmission_og_gtk_SOURCES += \
+transmission_gtk_SOURCES += \
     actions.h \
     conf.h \
     details.h \
@@ -77,19 +77,19 @@ transmission_og_gtk_SOURCES += \
     util.h \
     ../libtransmission/version.h
 
-nodist_EXTRA_transmission_og_gtk_SOURCES = dummy.cxx # force C++ linking
+nodist_EXTRA_transmission_gtk_SOURCES = dummy.cxx # force C++ linking
 
 # Manual page.
-dist_man_MANS = transmission-og-gtk.1
+dist_man_MANS = transmission-gtk.1
 
-transmission_og_gtk_LDADD = \
-    $(top_builddir)/libtransmission/libtransmission-og.la \
+transmission_gtk_LDADD = \
+    $(top_builddir)/libtransmission/libtransmission.la \
     @GTK_LIBS@ \
     @LIBAPPINDICATOR_LIBS@ \
     @LIBEVENT_LIBS@
 
 # Desktop integration.
-DESKTOP_IN_FILES=transmission-og-gtk.desktop.in
+DESKTOP_IN_FILES=transmission-gtk.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 MAINTAINERCLEANFILES = $(DESKTOP_FILES)
 # "mingw32-make" cannot deal with an absolute UNIX path in a rule dependency
@@ -101,7 +101,7 @@ MAINTAINERCLEANFILES = $(DESKTOP_FILES)
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
 
-APPDATA_IN_FILES=transmission-og-gtk.appdata.xml.in
+APPDATA_IN_FILES=transmission-gtk.appdata.xml.in
 APPDATA_FILES=$(APPDATA_IN_FILES:.xml.in=.xml)
 #INTLTOOL_XML_RULE
 %.xml:       %.xml.in       $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
@@ -109,7 +109,7 @@ APPDATA_FILES=$(APPDATA_IN_FILES:.xml.in=.xml)
 appdatadir = $(datadir)/metainfo
 appdata_DATA = $(APPDATA_FILES)
 
-icon_DATA = transmission-og.png
+icon_DATA = transmission.png
 icondir = $(datadir)/pixmaps
 
 UI_FILES = transmission-ui.xml
@@ -134,8 +134,8 @@ EXTRA_DIST += \
 	$(APPDATA_IN_FILES) \
 	$(UI_FILES) \
 	transmission.gresource.xml \
-	transmission-og.ico \
-	transmission-og.png
+	transmission.ico \
+	transmission.png
 
 DISTCLEANFILES = \
 	$(DESKTOP_FILES) \
@@ -143,7 +143,7 @@ DISTCLEANFILES = \
 
 # Windows resource file.
 if WIN32
-transmission-og-gtk.rc: ../transmission-og.rc.in
+transmission-gtk.rc: ../transmission.rc.in
 	TR_FILE_DESCRIPTION="Transmission OG GTK+ Client"; \
 	TR_INTERNAL_NAME="$(PACKAGE_NAME)-gtk"; \
 	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-gtk.exe"; \
@@ -157,10 +157,10 @@ transmission-og-gtk.rc: ../transmission-og.rc.in
 	-e "s/%TR_MAIN_ICON%/$${TR_MAIN_ICON}/" \
 	$< > $@
 
-transmission-og-gtk.res: transmission-og-gtk.rc ../libtransmission/version.h
+transmission-gtk.res: transmission-gtk.rc ../libtransmission/version.h
 	$(WINDRES) -J rc -I $(top_srcdir) -I $(srcdir) -i $< -O coff -o $@
 
-BUILT_SOURCES += transmission-og-gtk.res
-CLEANFILES += transmission-og-gtk.rc transmission-og-gtk.res
-transmission_og_gtk_LDADD += transmission-og-gtk.res
+BUILT_SOURCES += transmission-gtk.res
+CLEANFILES += transmission-gtk.rc transmission-gtk.res
+transmission_gtk_LDADD += transmission-gtk.res
 endif #WIN32

@@ -1,7 +1,7 @@
 # CMake-4 got even crazier and errors out if the minimum required version is
 # lower than 3.5. Yes, you read that right - they redefined boolean logic :-)
 cmake_minimum_required(VERSION 3.5.0)
-project(transmission-og)
+project(transmission)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -26,7 +26,7 @@ tr_auto_option(ENABLE_MAC           "Build Mac client" AUTO)
         option(ENABLE_UTP           "Build µTP support" ON)
         option(ENABLE_NLS           "Enable native language support" ON)
         option(INSTALL_DOC          "Build/install documentation" ON)
-        option(BUILD_SHARED_LIBS    "Build a shared library" ON)
+        option(BUILD_SHARED_LIBS    "Build a shared library" OFF)
         option(INSTALL_LIB          "Install the library" ${BUILD_SHARED_LIBS})
 tr_auto_option(USE_SYSTEM_EVENT2    "Use system event2 library" AUTO)
 tr_auto_option(USE_SYSTEM_DHT       "Use system dht library" AUTO)

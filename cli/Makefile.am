@@ -10,21 +10,21 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-bin_PROGRAMS = transmission-og-cli
+bin_PROGRAMS = transmission-cli
 
-dist_man_MANS = transmission-og-cli.1
+dist_man_MANS = transmission-cli.1
 
-transmission_og_cli_SOURCES = \
+transmission_cli_SOURCES = \
 			      cli.c \
 			      ../libtransmission/version.h
-nodist_EXTRA_transmission_og_cli_SOURCES = dummy.cxx # force C++ linking
+nodist_EXTRA_transmission_cli_SOURCES = dummy.cxx # force C++ linking
 
-transmission_og_cli_LDADD = \
-    $(top_builddir)/libtransmission/libtransmission-og.la \
+transmission_cli_LDADD = \
+    $(top_builddir)/libtransmission/libtransmission.la \
     @LIBEVENT_LIBS@
 
 if WIN32
-transmission-og-cli.rc: ../transmission-og.rc.in
+transmission-cli.rc: ../transmission.rc.in
 	TR_FILE_DESCRIPTION="Transmission OG Utility ('cli', obsolete)"; \
 	TR_INTERNAL_NAME="$(PACKAGE_NAME)-cli"; \
 	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-cli.exe"; \
@@ -36,10 +36,10 @@ transmission-og-cli.rc: ../transmission-og.rc.in
 	-e "s/%HAVE_ICON%/$${HAVE_ICON}/" \
 	$< > $@
 
-transmission-og-cli.res: transmission-og-cli.rc ../libtransmission/version.h
+transmission-cli.res: transmission-cli.rc ../libtransmission/version.h
 	$(WINDRES) -J rc -I $(top_srcdir) -i $< -O coff -o $@
 
-BUILT_SOURCES += transmission-og-cli.res
-CLEANFILES += transmission-og-cli.rc transmission-og-cli.res
-transmission_og_cli_LDADD += transmission-og-cli.res
+BUILT_SOURCES += transmission-cli.res
+CLEANFILES += transmission-cli.rc transmission-cli.res
+transmission_cli_LDADD += transmission-cli.res
 endif #WIN32

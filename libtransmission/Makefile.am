@@ -19,16 +19,16 @@ AM_CFLAGS = \
   @PTHREAD_CFLAGS@ \
   @ZLIB_CFLAGS@
 
-lib_LTLIBRARIES = libtransmission-og.la
+lib_LTLIBRARIES = libtransmission.la
 
 # https://autotools.info/libtool/version.html:
 # Version format: "current:revision:age"
 # - Increase the "current" value whenever an interface has been added, removed or changed.
 # - Always increase the "revision" value.
 # - Increase the "age" value only if the changes made to the ABI are backward compatible
-libtransmission_og_la_LDFLAGS = -version-info 3:7:0
+libtransmission_la_LDFLAGS = -version-info 3:7:0
 
-libtransmission_og_la_LIBADD = \
+libtransmission_la_LIBADD = \
   @LIBUPNP_LIBS@ \
   @LIBNATPMP_LIBS@ \
   @INTLLIBS@ \
@@ -42,7 +42,7 @@ libtransmission_og_la_LIBADD = \
   @PTHREAD_LIBS@ \
   $(LIBM)
 
-libtransmission_og_la_SOURCES = \
+libtransmission_la_SOURCES = \
   announcer.c \
   announcer-http.c \
   announcer-udp.c \
@@ -107,32 +107,32 @@ libtransmission_og_la_SOURCES = \
   wildmat.c
 
 if USE_INOTIFY
-libtransmission_og_la_SOURCES += watchdir-inotify.c
+libtransmission_la_SOURCES += watchdir-inotify.c
 AM_CPPFLAGS += -DWITH_INOTIFY
 endif
 
 if USE_KQUEUE
-libtransmission_og_la_SOURCES += watchdir-kqueue.c
+libtransmission_la_SOURCES += watchdir-kqueue.c
 AM_CPPFLAGS += -DWITH_KQUEUE
 endif
 
 if WIN32
-libtransmission_og_la_SOURCES += file-win32.c subprocess-win32.c watchdir-win32.c
+libtransmission_la_SOURCES += file-win32.c subprocess-win32.c watchdir-win32.c
 else
-libtransmission_og_la_SOURCES += file-posix.c subprocess-posix.c
+libtransmission_la_SOURCES += file-posix.c subprocess-posix.c
 endif
 
 if CRYPTO_USE_OPENSSL
-libtransmission_og_la_SOURCES += crypto-utils-openssl.c
+libtransmission_la_SOURCES += crypto-utils-openssl.c
 endif
 if CRYPTO_USE_CYASSL
-libtransmission_og_la_SOURCES += crypto-utils-cyassl.c
+libtransmission_la_SOURCES += crypto-utils-cyassl.c
 if CYASSL_IS_WOLFSSL
 AM_CPPFLAGS += -DCYASSL_IS_WOLFSSL
 endif
 endif
 if CRYPTO_USE_POLARSSL
-libtransmission_og_la_SOURCES += crypto-utils-polarssl.c
+libtransmission_la_SOURCES += crypto-utils-polarssl.c
 if POLARSSL_IS_MBEDTLS
 AM_CPPFLAGS += -DPOLARSSL_IS_MBEDTLS
 endif
@@ -157,7 +157,7 @@ pkginclude_HEADERS = \
   web.h \
   version.h
 
-libtransmission_og_la_SOURCES += \
+libtransmission_la_SOURCES += \
   $(pkginclude_HEADERS) \
   announcer.h \
   announcer-common.h \
@@ -251,7 +251,7 @@ TESTS = \
 check_PROGRAMS = $(TESTS)
 
 apps_ldadd = \
-  ./libtransmission-og.la \
+  ./libtransmission.la \
   @LIBEVENT_LIBS@
 
 TEST_SOURCES = libtransmission-test.c

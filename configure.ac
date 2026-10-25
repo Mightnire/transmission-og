@@ -7,7 +7,7 @@ dnl these should be the only two lines you need to change
 m4_define([user_agent_prefix],[3.08])
 m4_define([peer_id_prefix],[-TR308Z-])
 
-AC_INIT([transmission-og],[user_agent_prefix],[https://github.com/stefantalpalaru/transmission-og])
+AC_INIT([transmission],[user_agent_prefix],[https://github.com/stefantalpalaru/transmission-og])
 AC_SUBST(USERAGENT_PREFIX,[user_agent_prefix])
 AC_SUBST(PEERID_PREFIX,[peer_id_prefix])
 
@@ -32,7 +32,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_C_INLINE
 
-dnl When we create a shared libtransmission-og, we are linking it to static
+dnl When we create a shared libtransmission, we are linking it to static
 dnl libraries in "third-party". Let's make sure those contain PIC objects.
 LT_INIT([pic-only])
 
@@ -567,7 +567,7 @@ IT_PROG_INTLTOOL([0.35.0],[no-xml])
     ])
 
     AC_CHECK_HEADERS([libintl.h])
-    GETTEXT_PACKAGE=transmission-og-gtk
+    GETTEXT_PACKAGE=transmission-gtk
     AC_SUBST(GETTEXT_PACKAGE)
     AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
     AM_GLIB_GNU_GETTEXT
@@ -601,7 +601,7 @@ AC_SUBST(INTLLIBS)
 
 
 AC_ARG_ENABLE([lightweight],
-              AS_HELP_STRING([--enable-lightweight],[optimise libtransmission-og for low-resource systems: smaller cache size, prefer unencrypted peer connections, etc.]),
+              AS_HELP_STRING([--enable-lightweight],[optimise libtransmission for low-resource systems: smaller cache size, prefer unencrypted peer connections, etc.]),
               [enable_lightweight=${enableval}],
               [enable_lightweight="no"])
 if test "x${enable_lightweight}" = "xyes" ; then
@@ -609,7 +609,7 @@ if test "x${enable_lightweight}" = "xyes" ; then
 fi
 
 AC_ARG_ENABLE([cli],
-              [AS_HELP_STRING([--enable-cli],[build old command-line client (deprecated, use transmission-og-remote instead)])],
+              [AS_HELP_STRING([--enable-cli],[build old command-line client (deprecated, use transmission-remote instead)])],
               [build_cli=${enableval}],
               [build_cli="no"])
 AM_CONDITIONAL([BUILD_CLI],[test "x${build_cli}" = "xyes"])
@@ -632,7 +632,7 @@ dnl
 dnl  Generate the output
 
 AC_CONFIG_FILES([Makefile
-                 transmission-og-gtk.spec
+                 transmission-gtk.spec
                  cli/Makefile
                  daemon/Makefile
                  libtransmission/Makefile
@@ -681,7 +681,7 @@ Configuration:
    Source code location:                              ${srcdir}
    Compilers:                                         ${CC} ${CXX}
 
-   Build libtransmission-og:                          yes
+   Build libtransmission:                          yes
       * optimised for low-resource systems:           ${enable_lightweight}
       * µTP enabled:                                  ${enable_utp:-yes}
       * crypto library:                               ${CRYPTO_PKG}

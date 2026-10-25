@@ -4,7 +4,7 @@ Copyright 2014 Richard Hughes <richard@hughsie.com>
 Copyright 2017 Endless Mobile, Inc.
  -->
 <component type="desktop-application">
-  <id type="desktop">transmission-og-gtk.desktop</id>
+  <id type="desktop">transmission-gtk.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0 OR GPL-3.0</project_license>
 
@@ -28,10 +28,10 @@ Copyright 2017 Endless Mobile, Inc.
       DHT, µTP, PEX and Magnet Link.
     </p>
   </description>
-  <url type="homepage">https://github.com/stefantalpalaru/transmission-og</url>
+  <url type="homepage">https://github.com/stefantalpalaru/transmission</url>
   <screenshots>
     <screenshot type="default">
-      <image type="source">https://raw.githubusercontent.com/stefantalpalaru/transmission-og/master/gtk/screenshots/a.png</image>
+      <image type="source">https://raw.githubusercontent.com/stefantalpalaru/transmission/master/gtk/screenshots/a.png</image>
     </screenshot>
   </screenshots>
 </component>

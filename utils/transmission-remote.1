@@ -1,10 +1,10 @@
 .Dd July 21, 2008
-.Dt TRANSMISSION-OG-REMOTE 1
+.Dt TRANSMISSION-REMOTE 1
 .Os
 .Sh NAME
-.Nm transmission-og-remote
+.Nm transmission-remote
 .Nd a remote control utility for
-.Xr transmission-og-daemon 1
+.Xr transmission-daemon 1
 and
 .Xr transmission 1
 .Sh SYNOPSIS
@@ -74,7 +74,7 @@ and
 is a remote control utility for
 .Xr transmission 1
 and
-.Xr transmission-og-daemon 1 .
+.Xr transmission-daemon 1 .
 .Pp
 By default,
 .Nm
@@ -326,68 +326,68 @@ key.
 .Sh EXAMPLES
 List all torrents:
 .Bd -literal -offset indent
-$ transmission-og-remote \-l
+$ transmission-remote \-l
 .Ed
 List all active torrents:
 .Bd -literal -offset indent
-$ transmission-og-remote \-tactive \-l
+$ transmission-remote \-tactive \-l
 .Ed
 Set download and upload limits to 400 kB/sec and 60 kB/sec:
 .Bd -literal -offset indent
-$ transmission-og-remote \-d400 \-u60
-$ transmission-og-remote \-\-downlimit=400 \-\-uplimit=60
+$ transmission-remote \-d400 \-u60
+$ transmission-remote \-\-downlimit=400 \-\-uplimit=60
 .Ed
 Set alternate download and upload limits to 100 kB/sec and 20 kB/sec:
 .Bd -literal -offset indent
-$ transmission-og-remote \-asd100 \-asu20
-$ transmission-og-remote \-\-alt-speed-downlimit=100 \-\-alt-speed-uplimit=20
+$ transmission-remote \-asd100 \-asu20
+$ transmission-remote \-\-alt-speed-downlimit=100 \-\-alt-speed-uplimit=20
 .Ed
 Set the scheduler to use the alternate speed limits on weekdays between 10AM and 11PM
 .Bd -literal -offset indent
-$ transmission-og-remote \-\-alt-speed-time-begin=1000
-$ transmission-og-remote \-\-alt-speed-time-end=2300
-$ transmission-og-remote \-\-alt-speed-days=1-5
-$ transmission-og-remote \-\-alt-speed-scheduler
+$ transmission-remote \-\-alt-speed-time-begin=1000
+$ transmission-remote \-\-alt-speed-time-end=2300
+$ transmission-remote \-\-alt-speed-days=1-5
+$ transmission-remote \-\-alt-speed-scheduler
 .Ed
 List all torrents' IDs and states:
 .Bd -literal -offset indent
-$ transmission-og-remote \-l
+$ transmission-remote \-l
 .Ed
 List all torrents from a remote session that requires authentication:
 .Bd -literal -offset indent
-$ transmission-og-remote host:9091 \-\-auth=username:password \-l
+$ transmission-remote host:9091 \-\-auth=username:password \-l
 .Ed
 Start all torrents:
 .Bd -literal -offset indent
-$ transmission-og-remote \-tall \-\-start
+$ transmission-remote \-tall \-\-start
 .Ed
 Add two torrents:
 .Bd -literal -offset indent
-$ transmission-og-remote \-a one.torrent two.torrent
+$ transmission-remote \-a one.torrent two.torrent
 .Ed
 Add all torrents in ~/Desktop:
 .Bd -literal -offset indent
-$ transmission-og-remote \-a ~/Desktop/*torrent
+$ transmission-remote \-a ~/Desktop/*torrent
 .Ed
 Get detailed information on the torrent whose ID is '1':
 .Bd -literal -offset indent
-$ transmission-og-remote \-t1 \-i
+$ transmission-remote \-t1 \-i
 .Ed
 Get a list of a torrent's files:
 .Bd -literal -offset indent
-$ transmission-og-remote \-t1 \-f
+$ transmission-remote \-t1 \-f
 .Ed
 Download only its second and fourth files:
 .Bd -literal -offset indent
-$ transmission-og-remote \-t1 \-Gall \-g2,4
+$ transmission-remote \-t1 \-Gall \-g2,4
 .Ed
 Set all torrents' first two files' priorities to high:
 .Bd -literal -offset indent
-$ transmission-og-remote \-tall \-ph1,2
+$ transmission-remote \-tall \-ph1,2
 .Ed
 Set all torrents' files' priorities to normal:
 .Bd -literal -offset indent
-$ transmission-og-remote \-tall \-pnall
+$ transmission-remote \-tall \-pnall
 .Ed
 .Sh ENVIRONMENT
 .Bl -tag -width Fl
@@ -403,12 +403,12 @@ Sets the proxy to use for http tracker announces.
 and
 .An Mike Gelfand .
 .Sh SEE ALSO
-.Xr transmission-og-create 1 ,
-.Xr transmission-og-daemon 1 ,
-.Xr transmission-og-edit 1 ,
-.Xr transmission-og-gtk 1 ,
-.Xr transmission-og-qt 1 ,
-.Xr transmission-og-remote 1 ,
-.Xr transmission-og-show 1
+.Xr transmission-create 1 ,
+.Xr transmission-daemon 1 ,
+.Xr transmission-edit 1 ,
+.Xr transmission-gtk 1 ,
+.Xr transmission-qt 1 ,
+.Xr transmission-remote 1 ,
+.Xr transmission-show 1
 .Pp
-https://github.com/stefantalpalaru/transmission-og
+https://github.com/stefantalpalaru/transmission

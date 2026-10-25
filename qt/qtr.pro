@@ -1,7 +1,7 @@
 TRANSMISSION_TOP = ..
 include($$(PWD)/config.pri)
 
-TARGET = transmission-og-qt
+TARGET = transmission-qt
 NAME = "Transmission OG"
 DESCRIPTION = "Transmission OG: a fast, easy and free BitTorrent client"
 LICENSE = "GPL"
@@ -11,7 +11,7 @@ INSTALLS += target
 
 unix: INSTALLS += man
 man.path = /share/man/man1/
-man.files = transmission-og-qt.1
+man.files = transmission-qt.1
 
 CONFIG += qt thread link_pkgconfig c++17 warn_on optimize_full
 QT += dbus network widgets
@@ -28,7 +28,7 @@ INCLUDEPATH += \
 	/usr/local/include
 
 # We cannot use "*.la" files in here, since we are not linking with Libtool.
-LIBS += $${TRANSMISSION_TOP}/libtransmission/.libs/libtransmission-og.a
+LIBS += $${TRANSMISSION_TOP}/libtransmission/.libs/libtransmission.a
 LIBS += $${LIBUTP_LIBS}
 LIBS += $${DHT_LIBS}
 LIBS += $${LIBB64_LIBS}

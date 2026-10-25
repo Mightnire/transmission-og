@@ -38,7 +38,7 @@ add_custom_command(
         --c-name transmission
         transmission.gresource.xml
     DEPENDS
-        icons/hicolor_apps_scalable_transmission-og.svg
+        icons/hicolor_apps_scalable_transmission.svg
         icons/lock.png
         icons/ratio.png
         icons/turtle-blue.png
@@ -54,16 +54,16 @@ if(ENABLE_NLS)
     set(${PROJECT_NAME}_DESKTOP_FILE "${PROJECT_BINARY_DIR}/${TR_NAME}-gtk.desktop")
     add_custom_command(
         OUTPUT ${${PROJECT_NAME}_DESKTOP_FILE}
-        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --desktop -d ${CMAKE_SOURCE_DIR}/po --template ${PROJECT_SOURCE_DIR}/transmission-og-gtk.desktop.in -o ${${PROJECT_NAME}_DESKTOP_FILE}
-        DEPENDS ${PROJECT_SOURCE_DIR}/transmission-og-gtk.desktop.in
+        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --desktop -d ${CMAKE_SOURCE_DIR}/po --template ${PROJECT_SOURCE_DIR}/transmission-gtk.desktop.in -o ${${PROJECT_NAME}_DESKTOP_FILE}
+        DEPENDS ${PROJECT_SOURCE_DIR}/transmission-gtk.desktop.in
         VERBATIM
     )
 
     set(${PROJECT_NAME}_APPDATA_FILE "${PROJECT_BINARY_DIR}/${TR_NAME}-gtk.appdata.xml")
     add_custom_command(
         OUTPUT ${${PROJECT_NAME}_APPDATA_FILE}
-        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --xml -d ${CMAKE_SOURCE_DIR}/po --template ${PROJECT_SOURCE_DIR}/transmission-og-gtk.appdata.xml.in -o ${${PROJECT_NAME}_APPDATA_FILE}
-        DEPENDS ${PROJECT_SOURCE_DIR}/transmission-og-gtk.appdata.xml.in
+        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --xml -d ${CMAKE_SOURCE_DIR}/po --template ${PROJECT_SOURCE_DIR}/transmission-gtk.appdata.xml.in -o ${${PROJECT_NAME}_APPDATA_FILE}
+        DEPENDS ${PROJECT_SOURCE_DIR}/transmission-gtk.appdata.xml.in
         VERBATIM
     )
 endif()
@@ -176,9 +176,9 @@ endif()
 install(TARGETS ${TR_NAME}-gtk DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 set(${PROJECT_NAME}_PUBLIC_ICONS
-    hicolor_apps_scalable_transmission-og.svg
-    hicolor_apps_scalable_transmission-og-devel.svg
-    hicolor_apps_symbolic_transmission-og-symbolic.svg
+    hicolor_apps_scalable_transmission.svg
+    hicolor_apps_scalable_transmission-devel.svg
+    hicolor_apps_symbolic_transmission-symbolic.svg
 )
 
 set(ICON_NAME_REGEX "^([^_]+)_([^_]+)_([^_]+)_(.+)$")
@@ -196,5 +196,5 @@ if(ENABLE_NLS)
     install(FILES ${${PROJECT_NAME}_DESKTOP_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES ${${PROJECT_NAME}_APPDATA_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 else()
-    install(FILES transmission-og-gtk.desktop.in DESTINATION ${CMAKE_INSTALL_DATADIR}/applications RENAME ${TR_NAME}-gtk.desktop)
+    install(FILES transmission-gtk.desktop.in DESTINATION ${CMAKE_INSTALL_DATADIR}/applications RENAME ${TR_NAME}-gtk.desktop)
 endif()

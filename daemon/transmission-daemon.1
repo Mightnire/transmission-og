@@ -1,11 +1,11 @@
 .Dd July 21, 2008
-.Dt TRANSMISSION-OG-DAEMON 1
+.Dt TRANSMISSION-DAEMON 1
 .Sh NAME
-.Nm transmission-og-daemon
+.Nm transmission-daemon
 .Nd a bittorrent client
 .Sh SYNOPSIS
 .Bk -words
-.Nm transmission-og-daemon
+.Nm transmission-daemon
 .Fl h
 .Nm
 .Op Fl a Ar x.x.x.x,...
@@ -35,7 +35,7 @@
 .Nm
 is a daemon-based Transmission OG session that can be controlled
 via RPC commands from transmission's web interface or
-.Xr transmission-og-remote 1 .
+.Xr transmission-remote 1 .
 .Sh OPTIONS
 .Bl -tag -width Ds
 .It Fl a Fl -allowed Ar x.x.x.x,...
@@ -54,7 +54,7 @@ Do not watch for new .torrent files.
 .It Fl B Fl -no-blocklist
 Disble blocklists.
 .It Fl d
-Dump transmission-og-daemon's settings to stderr.
+Dump transmission-daemon's settings to stderr.
 .It Fl f Fl -foreground
 Run in the foreground and print errors to stderr.
 .It Fl g Fl -config-dir Ar directory
@@ -142,7 +142,7 @@ Sets the default config-dir.
 .El
 .Sh FILES
 .Bl -tag -width Ds -compact
-.It ~/.config/transmission-og-daemon
+.It ~/.config/transmission-daemon
 The config-dir used when neither
 .Op Ev TRANSMISSION_HOME
 nor
@@ -159,12 +159,12 @@ See https://github.com/transmission/transmission/wiki/Configuration-Files for mo
 and
 .An Mike Gelfand .
 .Sh SEE ALSO
-.Xr transmission-og-create 1 ,
-.Xr transmission-og-daemon 1 ,
-.Xr transmission-og-edit 1 ,
-.Xr transmission-og-gtk 1 ,
-.Xr transmission-og-qt 1 ,
-.Xr transmission-og-remote 1 ,
-.Xr transmission-og-show 1
+.Xr transmission-create 1 ,
+.Xr transmission-daemon 1 ,
+.Xr transmission-edit 1 ,
+.Xr transmission-gtk 1 ,
+.Xr transmission-qt 1 ,
+.Xr transmission-remote 1 ,
+.Xr transmission-show 1
 .Pp
-https://github.com/stefantalpalaru/transmission-og
+https://github.com/stefantalpalaru/transmission

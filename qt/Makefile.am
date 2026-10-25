@@ -35,16 +35,16 @@ AM_CXXFLAGS = \
     @LIBCURL_CFLAGS@ \
     @OPENSSL_CFLAGS@
 
-bin_PROGRAMS = transmission-og-qt
+bin_PROGRAMS = transmission-qt
 
 # Libraries we link to.
-transmission_og_qt_LDADD = \
-    $(top_builddir)/libtransmission/libtransmission-og.la \
+transmission_qt_LDADD = \
+    $(top_builddir)/libtransmission/libtransmission.la \
     @QT_LIBS@ \
     @LIBEVENT_LIBS@
 
 if WIN32
-transmission_og_qt_LDADD += \
+transmission_qt_LDADD += \
     -lintl \
     -liconv \
     -lwldap32 \
@@ -53,7 +53,7 @@ transmission_og_qt_LDADD += \
 endif #WIN32
 
 # Regular C++ source files.
-transmission_og_qt_SOURCES = \
+transmission_qt_SOURCES = \
     AboutDialog.cc \
     AddData.cc \
     Application.cc \
@@ -102,7 +102,7 @@ transmission_og_qt_SOURCES = \
     WatchDir.cc
 
 # Regular headers.
-transmission_og_qt_SOURCES += \
+transmission_qt_SOURCES += \
     AboutDialog.h \
     AddData.h \
     Application.h \
@@ -151,7 +151,7 @@ transmission_og_qt_SOURCES += \
     WatchDir.h
 
 # Stand-alone headers.
-transmission_og_qt_SOURCES += \
+transmission_qt_SOURCES += \
     BaseDialog.h \
     CustomVariantType.h \
     Speed.h \
@@ -167,7 +167,7 @@ EXTRA_DIST += \
 %.moc.cpp: %.h
 	$(QT_MOC) $(AM_CPPFLAGS) -o $@ $<
 
-nodist_transmission_og_qt_SOURCES = \
+nodist_transmission_qt_SOURCES = \
     AboutDialog.moc.cpp \
     AddData.moc.cpp \
     Application.moc.cpp \
@@ -216,13 +216,13 @@ nodist_transmission_og_qt_SOURCES = \
     WatchDir.moc.cpp
 
 # "MakeDialog.cc" includes "MakeDialog.moc" which is generated from itself.
-nodist_transmission_og_qt_SOURCES += \
+nodist_transmission_qt_SOURCES += \
     MakeDialog.moc
 MakeDialog.moc: MakeDialog.cc
 	$(QT_MOC) $(AM_CPPFLAGS) -o $@ "$(srcdir)/$(patsubst %.moc,%.cc,$@)"
 
 # UI files are used to generate headers.
-transmission_og_qt_UI = \
+transmission_qt_UI = \
     AboutDialog.ui \
     DetailsDialog.ui \
     LicenseDialog.ui \
@@ -234,9 +234,9 @@ transmission_og_qt_UI = \
     RelocateDialog.ui \
     SessionDialog.ui \
     StatsDialog.ui
-EXTRA_DIST += $(transmission_og_qt_UI)
+EXTRA_DIST += $(transmission_qt_UI)
 
-nodist_transmission_og_qt_SOURCES += \
+nodist_transmission_qt_SOURCES += \
     ui_AboutDialog.h \
     ui_DetailsDialog.h \
     ui_LicenseDialog.h \
@@ -253,17 +253,17 @@ ui_%.h: %.ui
 	$(QT_UIC) $< > $@
 
 # Qt resources we embed in the resulting binary.
-transmission_og_qt_QRC = \
+transmission_qt_QRC = \
     application.qrc
 if WIN32
-transmission_og_qt_QRC += \
+transmission_qt_QRC += \
     icons/Faenza/Faenza.qrc
 endif #WIN32
 EXTRA_DIST += \
-    $(transmission_og_qt_QRC) \
+    $(transmission_qt_QRC) \
     icons
 
-transmission_og_qt_RES = \
+transmission_qt_RES = \
 			 translations/transmission_af.ts \
 			 translations/transmission_ca.ts \
 			 translations/transmission_ca@valencia.ts \
@@ -299,23 +299,23 @@ transmission_og_qt_RES = \
 			 translations/transmission_zh_CN.ts \
 			 translations/transmission_zh_HK.ts \
 			 translations/transmission_zh_TW.ts
-EXTRA_DIST += $(transmission_og_qt_RES)
+EXTRA_DIST += $(transmission_qt_RES)
 
-resources.cc: $(transmission_og_qt_QRC) $(transmission_og_qt_RES)
+resources.cc: $(transmission_qt_QRC) $(transmission_qt_RES)
 	$(QT_RCC) -o $@ $<
-nodist_transmission_og_qt_SOURCES += \
+nodist_transmission_qt_SOURCES += \
     resources.cc
 
 # Make sure that all these generated source files get built first and are
 # cleaned properly.
-BUILT_SOURCES += $(nodist_transmission_og_qt_SOURCES)
-CLEANFILES += $(nodist_transmission_og_qt_SOURCES)
+BUILT_SOURCES += $(nodist_transmission_qt_SOURCES)
+CLEANFILES += $(nodist_transmission_qt_SOURCES)
 
 # Manual page.
-dist_man_MANS = transmission-og-qt.1
+dist_man_MANS = transmission-qt.1
 
 # Desktop integration.
-DESKTOP_FILES = transmission-og-qt.desktop
+DESKTOP_FILES = transmission-qt.desktop
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
 EXTRA_DIST += \
@@ -356,7 +356,7 @@ distdir:
 
 # Windows resource file.
 if WIN32
-transmission-og-qt.rc: ../transmission-og.rc.in
+transmission-qt.rc: ../transmission.rc.in
 	TR_FILE_DESCRIPTION="Transmission OG Qt Client"; \
 	TR_INTERNAL_NAME="$(PACKAGE_NAME)-qt"; \
 	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-qt.exe"; \
@@ -370,10 +370,10 @@ transmission-og-qt.rc: ../transmission-og.rc.in
 	-e "s/%TR_MAIN_ICON%/$${TR_MAIN_ICON}/" \
 	$< > $@
 
-transmission-og-qt.res: transmission-og-qt.rc ../libtransmission/version.h
+transmission-qt.res: transmission-qt.rc ../libtransmission/version.h
 	$(WINDRES) -J rc -I $(top_srcdir) -I $(srcdir) -i $< -O coff -o $@
 
-BUILT_SOURCES += transmission-og-qt.res
-CLEANFILES += transmission-og-qt.rc transmission-og-qt.res
-transmission_og_qt_LDADD += transmission-og-qt.res
+BUILT_SOURCES += transmission-qt.res
+CLEANFILES += transmission-qt.rc transmission-qt.res
+transmission_qt_LDADD += transmission-qt.res
 endif #WIN32

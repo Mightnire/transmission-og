@@ -12,16 +12,16 @@ AM_CFLAGS = \
     @PTHREAD_CFLAGS@
 
 EXTRA_DIST += \
-    transmission-og-daemon.service
+    transmission-daemon.service
 
 dist_man_MANS = \
-    transmission-og-daemon.1
+    transmission-daemon.1
 
 bin_PROGRAMS = \
-    transmission-og-daemon
+    transmission-daemon
 
-transmission_og_daemon_LDADD = \
-    $(top_builddir)/libtransmission/libtransmission-og.la \
+transmission_daemon_LDADD = \
+    $(top_builddir)/libtransmission/libtransmission.la \
     @SYSTEMD_LIBS@ \
     @LIBEVENT_LIBS@
 
@@ -29,11 +29,11 @@ noinst_HEADERS = \
 		 daemon.h \
 		 ../libtransmission/version.h
 
-transmission_og_daemon_SOURCES = daemon.c
-nodist_EXTRA_transmission_og_daemon_SOURCES = dummy.cxx # force C++ linking
+transmission_daemon_SOURCES = daemon.c
+nodist_EXTRA_transmission_daemon_SOURCES = dummy.cxx # force C++ linking
 
 if WIN32
-transmission-og-daemon.rc: ../transmission-og.rc.in
+transmission-daemon.rc: ../transmission.rc.in
 	TR_FILE_DESCRIPTION="Transmission OG Daemon"; \
 	TR_INTERNAL_NAME="$(PACKAGE_NAME)-daemon"; \
 	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-daemon.exe"; \
@@ -45,14 +45,14 @@ transmission-og-daemon.rc: ../transmission-og.rc.in
 	-e "s/%HAVE_ICON%/$${HAVE_ICON}/" \
 	$< > $@
 
-transmission_og_daemon_SOURCES += daemon-win32.c
+transmission_daemon_SOURCES += daemon-win32.c
 
-transmission-og-daemon.res: transmission-og-daemon.rc ../libtransmission/version.h
+transmission-daemon.res: transmission-daemon.rc ../libtransmission/version.h
 	$(WINDRES) -J rc -I $(top_srcdir) -i $< -O coff -o $@
 
-BUILT_SOURCES += transmission-og-daemon.res
-CLEANFILES += transmission-og-daemon.rc transmission-og-daemon.res
-transmission_og_daemon_LDADD += transmission-og-daemon.res
+BUILT_SOURCES += transmission-daemon.res
+CLEANFILES += transmission-daemon.rc transmission-daemon.res
+transmission_daemon_LDADD += transmission-daemon.res
 else #WIN32
-transmission_og_daemon_SOURCES += daemon-posix.c
+transmission_daemon_SOURCES += daemon-posix.c
 endif #WIN32
