@@ -85,11 +85,11 @@ static struct event_base *ev_base = NULL;
 
 static char const *getUsage(void)
 {
-    return "Transmission OG " LONG_VERSION_STRING
+    return "Transmission " LONG_VERSION_STRING
            "  https://github.com/stefantalpalaru/transmission-og\n"
            "A fast and easy BitTorrent client\n"
            "\n" MY_NAME
-           " is a headless Transmission OG session\n"
+           " is a headless Transmission session\n"
            "that can be controlled via transmission-remote\n"
            "or the web interface.\n"
            "\n"

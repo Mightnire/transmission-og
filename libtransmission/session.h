@@ -12,7 +12,7 @@
 #error only libtransmission should #include this header.
 #endif
 
-#define TR_NAME "Transmission OG"
+#define TR_NAME "Transmission"
 
 #include <libutp/utp.h>
 

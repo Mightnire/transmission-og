@@ -69,6 +69,9 @@ tr_upnp *tr_upnpInit(void)
 
 void tr_upnpClose(tr_upnp *handle)
 {
+    if (handle == NULL) {
+        return;
+    }
     TR_ASSERT(!handle->isMapped);
     TR_ASSERT(handle->state == TR_UPNP_IDLE || handle->state == TR_UPNP_ERR || handle->state == TR_UPNP_DISCOVER);
 
