@@ -664,6 +664,7 @@ void tr_torrentSaveResume(tr_torrent *tor)
     tr_variantDictAddInt(&top, TR_KEY_uploaded, tor->uploadedPrev + tor->uploadedCur);
     tr_variantDictAddInt(&top, TR_KEY_max_peers, tor->maxConnectedPeers);
     tr_variantDictAddInt(&top, TR_KEY_bandwidth_priority, tr_torrentGetPriority(tor));
+    tr_variantDictAddInt(&top, TR_KEY_queuePosition, tor->queuePosition);
     tr_variantDictAddBool(&top, TR_KEY_paused, !tor->isRunning && !tor->isQueued);
     savePeers(&top, tor);
 
@@ -819,6 +820,11 @@ static uint64_t loadFromFile(tr_torrent *tor, uint64_t fieldsToLoad, bool *didRe
         tr_isPriority(i)) {
         tr_torrentSetPriority(tor, i);
         fieldsLoaded |= TR_FR_BANDWIDTH_PRIORITY;
+    }
+
+    if ((fieldsToLoad & TR_FR_QUEUE_POSITION) != 0 && tr_variantDictFindInt(&top, TR_KEY_queuePosition, &i)) {
+        tor->queuePosition = i;
+        fieldsLoaded |= TR_FR_QUEUE_POSITION;
     }
 
     if ((fieldsToLoad & TR_FR_PEERS) != 0) {

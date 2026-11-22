@@ -1994,6 +1994,22 @@ struct sessionLoadTorrentsData {
     bool done;
 };
 
+static int compareTorrentByQueuePositionAndDate(void const *va, void const *vb)
+{
+    tr_torrent const *a = *(tr_torrent const *const *)va;
+    tr_torrent const *b = *(tr_torrent const *const *)vb;
+
+    if (a->queuePosition != b->queuePosition) {
+        return a->queuePosition < b->queuePosition ? -1 : 1;
+    }
+
+    if (a->addedDate != b->addedDate) {
+        return a->addedDate < b->addedDate ? -1 : 1;
+    }
+
+    return a->uniqueId - b->uniqueId;
+}
+
 static void sessionLoadTorrents(void *vdata)
 {
     struct sessionLoadTorrentsData *data = vdata;
@@ -2043,6 +2059,15 @@ static void sessionLoadTorrents(void *vdata)
     TR_ASSERT(i == n);
 
     tr_list_free(&list, NULL);
+
+    qsort(data->torrents, n, sizeof(tr_torrent *), compareTorrentByQueuePositionAndDate);
+
+    for (i = 0; i < n; ++i) {
+        if (data->torrents[i]->queuePosition != i) {
+            data->torrents[i]->queuePosition = i;
+            tr_torrentSetDirty(data->torrents[i]);
+        }
+    }
 
     if (n != 0) {
         tr_logAddInfo(_("Loaded %d torrents"), n);

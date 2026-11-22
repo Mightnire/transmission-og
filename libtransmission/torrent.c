@@ -866,7 +866,7 @@ static void torrentInit(tr_torrent *tor, tr_ctor const *ctor)
     tor->session = session;
     tor->uniqueId = nextUniqueId++;
     tor->magicNumber = TORRENT_MAGIC_NUMBER;
-    tor->queuePosition = session->torrentCount;
+    tor->queuePosition = -1;
     tor->labels = TR_PTR_ARRAY_INIT;
 
     tr_sha1(tor->obfuscatedHash, "req2", 4, tor->info.hash, SHA_DIGEST_LENGTH, NULL);
@@ -900,6 +900,10 @@ static void torrentInit(tr_torrent *tor, tr_ctor const *ctor)
 
     bool didRenameResumeFileToHashOnlyName = false;
     loaded = tr_torrentLoadResume(tor, ~0, ctor, &didRenameResumeFileToHashOnlyName);
+
+    if ((loaded & TR_FR_QUEUE_POSITION) == 0 || tor->queuePosition < 0) {
+        tor->queuePosition = (session->isClosed || session->torrentList == NULL) ? INT_MAX : session->torrentCount;
+    }
 
     if (didRenameResumeFileToHashOnlyName) {
         /* Rename torrent file as well */
@@ -1639,6 +1643,7 @@ static void freeTorrent(tr_torrent *tor)
         if (t->queuePosition > tor->queuePosition) {
             t->queuePosition--;
             t->anyDate = now;
+            tr_torrentSetDirty(t);
         }
     }
 
@@ -3443,6 +3448,7 @@ void tr_torrentSetQueuePosition(tr_torrent *tor, int pos)
             if (old_pos <= walk->queuePosition && walk->queuePosition <= pos) {
                 walk->queuePosition--;
                 walk->anyDate = now;
+                tr_torrentSetDirty(walk);
             }
         }
 
@@ -3450,6 +3456,7 @@ void tr_torrentSetQueuePosition(tr_torrent *tor, int pos)
             if (pos <= walk->queuePosition && walk->queuePosition < old_pos) {
                 walk->queuePosition++;
                 walk->anyDate = now;
+                tr_torrentSetDirty(walk);
             }
         }
 
@@ -3460,6 +3467,9 @@ void tr_torrentSetQueuePosition(tr_torrent *tor, int pos)
 
     tor->queuePosition = MIN(pos, back + 1);
     tor->anyDate = now;
+    if (old_pos != tor->queuePosition) {
+        tr_torrentSetDirty(tor);
+    }
 
     TR_ASSERT(queueIsSequenced(tor->session));
 }
