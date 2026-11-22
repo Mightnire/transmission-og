@@ -1798,6 +1798,12 @@ static void sessionCloseImplStart(tr_session *session)
 
     session->isClosing = true;
 
+    /* Flush all torrent resume states with intact queue positions before teardown */
+    tr_torrent *tor = NULL;
+    while ((tor = tr_torrentNext(session, tor)) != NULL) {
+        tr_torrentSave(tor);
+    }
+
     free_incoming_peer_port(session);
 
     if (session->isLPDEnabled) {

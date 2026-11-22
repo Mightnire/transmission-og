@@ -903,6 +903,7 @@ static void torrentInit(tr_torrent *tor, tr_ctor const *ctor)
 
     if ((loaded & TR_FR_QUEUE_POSITION) == 0 || tor->queuePosition < 0) {
         tor->queuePosition = (session->isClosed || session->torrentList == NULL) ? INT_MAX : session->torrentCount;
+        tr_torrentSetDirty(tor);
     }
 
     if (didRenameResumeFileToHashOnlyName) {
@@ -1637,17 +1638,19 @@ static void freeTorrent(tr_torrent *tor)
     session->torrentCount--;
 
     /* resequence the queue positions */
-    tr_torrent *t = NULL;
+    if (!session->isClosing) {
+        tr_torrent *t = NULL;
 
-    while ((t = tr_torrentNext(session, t)) != NULL) {
-        if (t->queuePosition > tor->queuePosition) {
-            t->queuePosition--;
-            t->anyDate = now;
-            tr_torrentSetDirty(t);
+        while ((t = tr_torrentNext(session, t)) != NULL) {
+            if (t->queuePosition > tor->queuePosition) {
+                t->queuePosition--;
+                t->anyDate = now;
+                tr_torrentSetDirty(t);
+            }
         }
-    }
 
-    TR_ASSERT(queueIsSequenced(session));
+        TR_ASSERT(queueIsSequenced(session));
+    }
 
     tr_bandwidthDestruct(&tor->bandwidth);
     tr_ptrArrayDestruct(&tor->labels, tr_free);

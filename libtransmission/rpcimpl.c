@@ -171,6 +171,11 @@ static void notifyBatchQueueChange(tr_session *session, tr_torrent **torrents, i
     }
 
     notify(session, TR_RPC_SESSION_QUEUE_POSITIONS_CHANGED, NULL);
+
+    tr_torrent *tor = NULL;
+    while ((tor = tr_torrentNext(session, tor)) != NULL) {
+        tr_torrentSave(tor);
+    }
 }
 
 static char const *queueMoveTop(
@@ -1350,6 +1355,10 @@ static char const *torrentSet(
 
         if (tr_variantDictFindInt(args_in, TR_KEY_queuePosition, &tmp)) {
             tr_torrentSetQueuePosition(tor, tmp);
+            tr_torrent *walk = NULL;
+            while ((walk = tr_torrentNext(session, walk)) != NULL) {
+                tr_torrentSave(walk);
+            }
         }
 
         if (errmsg == NULL && tr_variantDictFindList(args_in, TR_KEY_trackerAdd, &tmp_variant)) {
