@@ -70,6 +70,7 @@ static char const *getNatStateStr(int state)
 
 static void natPulse(tr_shared *s, bool do_check)
 {
+#if 0
     int oldStatus;
     int newStatus;
     tr_port public_peer_port;
@@ -105,6 +106,9 @@ static void natPulse(tr_shared *s, bool do_check)
             getNatStateStr(oldStatus),
             getNatStateStr(newStatus));
     }
+#endif
+    s->natpmpStatus = TR_PORT_UNMAPPED;
+    s->upnpStatus = TR_PORT_UNMAPPED;
 }
 
 static void set_evtimer_from_status(tr_shared *s)
@@ -181,12 +185,16 @@ static void stop_forwarding(tr_shared *s)
     tr_logAddNamedInfo(getKey(), "%s", _("Stopped"));
     natPulse(s, false);
 
+#if 0
     tr_natpmpClose(s->natpmp);
     s->natpmp = NULL;
+#endif
     s->natpmpStatus = TR_PORT_UNMAPPED;
 
+#if 0
     tr_upnpClose(s->upnp);
     s->upnp = NULL;
+#endif
     s->upnpStatus = TR_PORT_UNMAPPED;
 
     stop_timer(s);
